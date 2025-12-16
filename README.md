@@ -55,7 +55,7 @@ Taskified/
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/ZaidK07/Taskified/
 cd Taskified
 ```
 
