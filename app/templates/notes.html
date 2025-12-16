@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <header class="dashboard-header glass-card">
+        <div class="user-info">
+            <h2>Notes</h2>
+        </div>
+        <div class="view-switcher" id="viewSwitcher">
+            <button class="view-btn active" data-view="grid" title="Grid View">
+                <i class="fas fa-th-large"></i>
+            </button>
+            <button class="view-btn" data-view="list" title="List View">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="btn-icon" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </header>
+
+    <main class="notes-container">
+        <!-- New Note Form -->
+        <div class="add-note-section glass-card">
+            <form action="{{ url_for('main.add_note') }}" method="POST" enctype="multipart/form-data"
+                class="add-note-form" id="addNoteForm">
+                <input type="text" name="title" placeholder="Title" class="note-title-input">
+                <textarea name="content" class="note-content-input" placeholder="Take a note..."
+                    id="noteContentEditor"></textarea>
+                <input type="text" name="tags" class="tag-input" placeholder="Tags (comma separated)">
+
+                <div class="note-actions">
+                    <div class="color-picker">
+                        {% set colors = ['card-blue', 'card-purple', 'card-pink', 'card-orange', 'card-green',
+                        'card-dark'] %}
+                        {% for color in colors %}
+                        <label class="color-option {{ color }}">
+                            <input type="radio" name="color" value="{{ color }}" {% if loop.first %}checked{% endif %}>
+                            <span class="color-circle"></span>
+                        </label>
+                        {% endfor %}
+
+                        <label class="file-upload-label" title="Add Image">
+                            <input type="file" name="image" accept="image/*" style="display: none;"
+                                onchange="document.getElementById('fileName').textContent = this.files[0].name">
+                            <i class="far fa-image"></i>
+                        </label>
+                        <span id="fileName"
+                            style="font-size: 0.8rem; color: var(--text-muted); margin-left: 5px;"></span>
+                    </div>
+                    <button type="submit" class="btn-primary btn-sm">Add Note</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="notes-grid" id="notesGrid">
+            {% for note in notes %}
+            <div class="note-card glass-card {{ note.color }}" data-id="{{ note.id }}"
+                data-title="{{ note.title or '' }}" data-content="{{ note.content or '' }}"
+                data-image="{{ url_for('static', filename='uploads/' + note.image_filename) if note.image_filename else '' }}"
+                data-color="{{ note.color }}" data-tags="{{ note.tags|map(attribute='name')|join(', ') }}"
+                data-public="{{ 'true' if note.is_public else 'false' }}" data-public-id="{{ note.public_id or '' }}">
+
+                {% if note.image_filename %}
+                <div class="note-image-container">
+                    <img src="{{ url_for('static', filename='uploads/' + note.image_filename) }}" alt="Note Image"
+                        class="note-image">
+                </div>
+                {% endif %}
+
+                <div class="note-inner-content">
+                    <div class="note-content">
+                        {% if note.title %}<h3>{{ note.title }}</h3>{% endif %}
+                        <p>{{ note.content }}</p>
+                    </div>
+                    <div class="tag-container">
+                        {% for tag in note.tags %}
+                        <span class="tag-chip">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Delete button kept outside inner content to avoid mask issues if wanted, or absolute positioned.
+                     For now keeping simple but allowing deletion via modal or corner on hover.
+                     Applying preventDefault on click in JS for this button. -->
+                <div class="note-footer">
+                    <button class="btn-delete-note"
+                        onclick="event.stopPropagation(); document.getElementById('delete-form-{{ note.id }}').submit();">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <form id="delete-form-{{ note.id }}" action="{{ url_for('main.delete_note', note_id=note.id) }}"
+                        method="POST" style="display: none;"></form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- Note Detail Modal -->
+    <div class="modal-backdrop" id="noteModalBackdrop">
+        <div class="note-modal" id="noteModal">
+            <div class="note-modal-content">
+                <div class="note-modal-image-container" id="modalImageContainer">
+                    <img src="" alt="" class="note-modal-image" id="modalImage">
+                </div>
+                <input type="text" class="note-modal-title" id="modalTitle" readonly placeholder="Title">
+                <div class="note-modal-text" id="modalContent"></div>
+                <div class="note-modal-rendered-content" id="modalRenderedContent"></div>
+                <div class="note-modal-tags" id="modalTags"></div>
+            </div>
+
+            <div class="note-modal-footer">
+                <form id="shareForm" method="post" action="">
+                    <button type="submit" class="btn-close-modal" id="shareBtn" style="color: var(--primary-color);">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <span id="shareLink"
+                        style="display:none; font-size: 0.8rem; color: var(--text-muted); margin-left: 10px;"></span>
+                </form>
+                <div style="display: flex; gap: 1rem;">
+                    <form id="deleteForm" method="post" action="">
+                        <button type="submit" class="btn-delete-note">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                    <button class="btn-close-modal" id="closeModalBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="user-info">
+        <h2>Search Results</h2>
+        <p class="date-display">Query: "{{ query }}"</p>
+    </div>
+    <a href="{{ url_for('main.index') }}" class="btn-icon" title="Back">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+</div>
+
+{% if not results.todos and not results.notes %}
+<div class="empty-state">
+    <i class="fas fa-search"></i>
+    <p>No results found matching your query.</p>
+</div>
+{% endif %}
+
+{% if results.todos %}
+<div class="section-title" style="margin: 2rem 0 1rem 0; color: var(--text-muted);">
+    <h3>Tasks ({{ results.todos|length }})</h3>
+</div>
+<div class="todo-list">
+    {% for todo in results.todos %}
+    <div class="todo-item {% if todo.is_complete %}completed{% endif %} glass-card">
+        <div class="todo-text">
+            {{ todo.title }}
+            {% if todo.tags %}
+            <div class="tag-container">
+                {% for tag in todo.tags %}
+                <span class="tag-chip">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if results.notes %}
+<div class="section-title" style="margin: 2rem 0 1rem 0; color: var(--text-muted);">
+    <h3>Notes ({{ results.notes|length }})</h3>
+</div>
+<div class="notes-grid">
+    {% for note in results.notes %}
+    <div class="note-card glass-card {{ note.color }}">
+        <div class="note-inner-content">
+            <div class="note-content">
+                <h3>{{ note.title }}</h3>
+                <p>{{ note.content[:200] }}...</p>
+            </div>
+            <div class="tag-container">
+                {% for tag in note.tags %}
+                <span class="tag-chip">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

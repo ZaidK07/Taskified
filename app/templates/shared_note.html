@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-header" style="justify-content: center;">
+    <div class="user-info" style="text-align: center;">
+        <h2>{{ note.title }}</h2>
+        <p class="date-display">Shared via FlaskTasks</p>
+    </div>
+</div>
+
+<div class="note-modal open"
+    style="margin: 0 auto; position: relative; max-width: 800px; transform: none; box-shadow: none; pointer-events: auto;">
+    {% if note.image_filename %}
+    <div class="note-modal-image-container" style="display: block;">
+        <img src="{{ url_for('static', filename='uploads/' + note.image_filename) }}" class="note-modal-image">
+    </div>
+    {% endif %}
+
+    <div class="note-modal-content">
+        <div class="note-modal-text" style="color: var(--text-light);">
+            {{ html_content|safe }}
+        </div>
+
+        {% if note.tags %}
+        <div class="tag-container" style="margin-top: 2rem;">
+            {% for tag in note.tags %}
+            <span class="tag-chip">{{ tag.name }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

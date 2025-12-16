@@ -1,0 +1,1135 @@
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --background-dark: #0f172a;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --success-color: #22c55e;
+    --danger-color: #ef4444;
+    --font-main: 'Outfit', sans-serif;
+    --shadow-gentle: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* --- Animated Background --- */
+.background-globes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+}
+
+.globe {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 10s infinite ease-in-out;
+}
+
+.globe-1 {
+    width: 300px;
+    height: 300px;
+    background: #6366f1;
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.globe-2 {
+    width: 400px;
+    height: 400px;
+    background: #a855f7;
+    bottom: 10%;
+    right: 10%;
+    animation-delay: -2s;
+}
+
+.globe-3 {
+    width: 250px;
+    height: 250px;
+    background: #ec4899;
+    top: 40%;
+    left: 60%;
+    animation-delay: -4s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20px, -30px);
+    }
+}
+
+/* --- Glass UI --- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 6rem 1rem 2rem 1rem;
+    /* Added top padding for fixed header */
+    z-index: 1;
+    transition: max-width 0.3s;
+}
+
+@media (max-width: 1280px) {
+    .app-container {
+        max-width: 90%;
+    }
+}
+
+/* --- Typography & Elements --- */
+h1,
+h2 {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-light);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: all 0.2s;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-main);
+    border: none;
+    transition: transform 0.1s;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* --- Auth Styles --- */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.auth-card {
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    padding-left: 40px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.flash-messages {
+    margin-bottom: 1rem;
+}
+
+.flash-message {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* --- Dashboard --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.user-info h2 {
+    font-size: 1.5rem;
+}
+
+.date-display {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.add-todo-section {
+    margin-bottom: 1rem;
+}
+
+.add-todo-form {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.add-todo-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+.add-todo-form input:focus {
+    box-shadow: none;
+}
+
+.btn-add {
+    background: var(--primary-color);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background: var(--primary-hover);
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.todo-text {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.completed .todo-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: -12px;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--text-muted);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.custom-checkbox:hover input~.checkmark {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-checkbox input:checked~.checkmark {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox input:checked~.checkmark:after {
+    display: block;
+}
+
+.custom-checkbox .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.btn-delete {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.todo-item:hover .btn-delete {
+    opacity: 1;
+}
+
+.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .dashboard-header h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* --- Global Header --- */
+.glass-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 1000;
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.search-form {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-form input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    color: var(--text-light);
+}
+
+.search-btn {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    border: 2px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-fallback {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* --- Navigation Dock --- */
+.glass-dock {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    /* Slightly more prominent */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 12px 24px;
+    border-radius: 50px;
+    display: flex;
+    gap: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.glass-dock:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.nav-item {
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    position: relative;
+    padding: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item:hover {
+    color: var(--text-light);
+    transform: scale(1.1);
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* --- Notes Interface --- */
+.notes-container {
+    padding-bottom: 5rem;
+    /* Space for dock */
+}
+
+/* Add Note Form */
+.add-note-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.add-note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.note-title-input {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    border-radius: 0;
+}
+
+.note-title-input:focus {
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
+
+.note-content-input {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    resize: none;
+    min-height: 60px;
+    outline: none;
+}
+
+.note-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+/* Color Picker */
+.color-picker {
+    display: flex;
+    gap: 8px;
+}
+
+.color-option {
+    cursor: pointer;
+    position: relative;
+}
+
+.color-option input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.color-circle {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-option input:checked+.color-circle {
+    transform: scale(1.1);
+    border-color: white;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Color Classes (Backgrounds) */
+.card-blue .color-circle {
+    background: #6366f1;
+}
+
+.card-purple .color-circle {
+    background: #a855f7;
+}
+
+.card-pink .color-circle {
+    background: #ec4899;
+}
+
+.card-orange .color-circle {
+    background: #f97316;
+}
+
+.card-green .color-circle {
+    background: #22c55e;
+}
+
+.card-dark .color-circle {
+    background: #334155;
+}
+
+/* Note Card Styles */
+/* Note Card Styles */
+.notes-grid {
+    column-count: 3;
+    column-gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+@media (max-width: 1024px) {
+    .notes-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .notes-grid {
+        column-count: 1;
+    }
+}
+
+.note-card {
+    padding: 0;
+    /* Reset padding for image handling, use inner wrapper */
+    display: inline-block;
+    /* Essential for CSS Columns */
+    width: 100%;
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+    /* Prevent splitting */
+
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    /* For image corners */
+    position: relative;
+    background: var(--glass-bg);
+    /* Ensure background is set */
+}
+
+.note-image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.note-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.note-card:hover .note-image {
+    transform: scale(1.05);
+}
+
+.note-inner-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.note-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.note-content h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    word-break: break-word;
+    /* Fix text wrapping */
+}
+
+.note-content p {
+    color: var(--text-light);
+    /* Better readability on colors */
+    font-size: 0.95rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    /* Fix text wrapping */
+}
+
+.note-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+/* File Upload Button */
+.file-upload-label {
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    font-size: 1.2rem;
+}
+
+.file-upload-label:hover {
+    color: var(--text-light);
+}
+
+/* View Switcher */
+.view-switcher {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.view-btn.active,
+.view-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+}
+
+/* List View Overrides */
+/* List View Overrides */
+.notes-grid.list-view {
+    column-count: 1 !important;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.notes-grid.list-view .note-card {
+    display: flex;
+    /* Return to flex for list item if desired, or keep inline-block */
+    width: 100%;
+    margin-bottom: 1rem;
+    flex-direction: column;
+    /* Stack image on top even in list view, or row if preferred */
+    /* If user wants Google Keep list view, it's usually just a single column of standard cards */
+}
+
+/* Reset image size for list view if it was changed */
+.notes-grid.list-view .note-image-container {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+}
+
+.notes-grid.list-view .note-inner-content {
+    padding: 1.5rem;
+}
+
+.note-card:hover .note-footer {
+    opacity: 1;
+}
+
+/* --- Note Modal --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.note-modal {
+    background: #1e293b;
+    width: fit-content;
+    /* Dynamic width */
+    min-width: 400px;
+    max-width: 900px;
+    /* Increased max width */
+    max-height: 90vh;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.open .note-modal {
+    transform: scale(1);
+}
+
+.note-modal-image-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    display: none;
+    max-height: 50vh;
+    /* Restrict height so content is visible */
+    overflow: hidden;
+    /* Crop excess if needed, or let object-fit handle it */
+    border-radius: 8px;
+    /* Nice touch */
+}
+
+.note-modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.note-modal-content {
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.note-modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-light);
+    background: transparent;
+    border: none;
+    width: 100%;
+    outline: none;
+}
+
+.note-modal-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    white-space: pre-wrap;
+    background: transparent;
+    border: none;
+    width: 100%;
+    outline: none;
+    min-height: 50px;
+    /* Removed resize/min-height constraints relevant to textarea */
+}
+
+.note-modal-footer {
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.btn-close-modal {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.btn-close-modal:hover {
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Truncation for Cards */
+.note-card {
+    max-height: 280px;
+    /* Fixed height for grid items */
+    cursor: pointer;
+}
+
+.note-inner-content {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.btn-delete-note {
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete-note:hover {
+    background: rgba(239, 68, 68, 0.8);
+}
+
+/* Colored Card Variants (Overriding base glass-card somewhat for tint) */
+.note-card.card-blue {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.note-card.card-purple {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+.note-card.card-pink {
+    background: rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.3);
+}
+
+.note-card.card-orange {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.3);
+}
+
+.note-card.card-green {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.note-card.card-dark {
+    background: rgba(30, 41, 59, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Markdown Editor Overrides --- */
+.EasyMDEContainer {
+    background: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.editor-toolbar {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-bottom: none !important;
+}
+
+.editor-toolbar i {
+    color: var(--text-light) !important;
+}
+
+.editor-toolbar a.active,
+.editor-toolbar a:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: transparent !important;
+}
+
+.CodeMirror {
+    background: rgba(15, 23, 42, 0.8) !important;
+    color: var(--text-light) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+.CodeMirror-cursor {
+    border-left: 1px solid var(--text-light) !important;
+}
+
+/* --- Tag Styles --- */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.tag-chip {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    border: 1px solid var(--glass-border);
+}
+
+.tag-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 4px 0;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.tag-input:focus {
+    border-color: var(--primary-color);
+}
+
+/* --- Profile Page --- */
+.profile-section {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary-color);
+}
+
+.profile-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info h2 {
+    margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+    color: var(--text-muted);
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskified</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <!-- Navigation Dock -->
+    {% if user %}
+    <nav class="glass-dock">
+        <a href="{{ url_for('main.index') }}"
+            class="nav-item {% if request.endpoint == 'main.index' %}active{% endif %}" title="Tasks">
+            <i class="fas fa-check-circle"></i>
+        </a>
+        <a href="{{ url_for('main.notes') }}"
+            class="nav-item {% if request.endpoint == 'main.notes' %}active{% endif %}" title="Notes">
+            <i class="fas fa-sticky-note"></i>
+        </a>
+    </nav>
+    {% endif %}
+
+    {% if user %}
+    <header class="glass-header">
+        <div class="brand">Taskified</div>
+        <form action="{{ url_for('main.search') }}" method="get" class="search-form">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+            <input type="text" name="q" placeholder="Search..." value="{{ query|default('') }}">
+        </form>
+        <a href="{{ url_for('auth.profile') }}" class="profile-link">
+            <div class="avatar-small">
+                <img src="{{ url_for('static', filename='avatars/user_' ~ user.id ~ '.jpg') }}"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    class="avatar-img">
+                <div class="avatar-fallback" style="display:none;">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </a>
+    </header>
+    {% endif %}
+
+    <div class="app-container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

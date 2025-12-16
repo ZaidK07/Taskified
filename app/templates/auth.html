@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="glass-card auth-card">
+        <div class="auth-header">
+            <h1>{% if mode == 'login' %}Welcome Back{% else %}Join Us{% endif %}</h1>
+            <p>{% if mode == 'login' %}Login to continue managing your tasks.{% else %}Create an account to get
+                started.{% endif %}</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.' + mode) }}" class="auth-form">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                {% if mode == 'login' %}Login{% else %}Sign Up{% endif %}
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            {% if mode == 'login' %}
+            <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Sign Up</a></p>
+            {% else %}
+            <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

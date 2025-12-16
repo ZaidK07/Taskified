@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <header class="dashboard-header glass-card">
+        <div class="user-info">
+            <h2>Hello, {{ user.email.split('@')[0] }}!</h2>
+            <p class="date-display" id="dateDisplay"></p>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="btn-icon" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </header>
+
+    <main class="todo-container">
+        <div class="add-todo-section glass-card">
+            <form action="{{ url_for('main.add_todo') }}" method="POST" class="add-todo-form glass-card">
+                <input type="text" name="title" placeholder="Add a new task..." required>
+                <input type="date" name="due_date" class="date-input" style="width: auto; margin-right: 0.5rem;"
+                    title="Due Date">
+                <input type="text" name="tags" placeholder="Tags" style="width: 100px; margin-right: 0.5rem;"
+                    title="Comma separated tags">
+                <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
+            </form>
+        </div>
+
+        <div class="todo-list">
+            {% if todos %}
+            {% for todo in todos %}
+            <div class="todo-item glass-card {% if todo.is_complete %}completed{% endif %}">
+                <form action="{{ url_for('main.update_todo', todo_id=todo.id) }}" method="POST" class="check-form">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" onchange="this.form.submit()" {% if todo.is_complete %}checked{% endif
+                            %}>
+                        <span class="checkmark"></span>
+                    </label>
+                </form>
+                <span class="todo-text">
+                    {{ todo.title }}
+                    <div
+                        style="font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                        {% if todo.due_date %}
+                        <span
+                            style="{% if todo.due_date.strftime('%Y-%m-%d') < now %}color: var(--danger-color);{% endif %}">
+                            <i class="far fa-calendar"></i> {{ todo.due_date.strftime('%b %d') }}
+                        </span>
+                        {% endif %}
+
+                        {% if todo.tags %}
+                        {% for tag in todo.tags %}
+                        <a href="{{ url_for('main.search', q=tag.name) }}" class="tag-chip"
+                            style="font-size: 0.7rem; padding: 1px 6px; text-decoration: none; color: var(--text-muted);">{{
+                            tag.name }}</a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </span>
+                <form action="{{ url_for('main.delete_todo', todo_id=todo.id) }}" method="POST" class="delete-form">
+                    <button type="submit" class="btn-delete" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state glass-card">
+                <i class="fas fa-clipboard-list"></i>
+                <p>No tasks yet. Add one above!</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</div>
+{% endblock %}
