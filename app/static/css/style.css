@@ -826,35 +826,107 @@ a:hover {
 
 /* List View Overrides */
 /* List View Overrides */
+/* List View Overrides - Zig Zag Design */
 .notes-grid.list-view {
-    column-count: 1 !important;
-    max-width: 600px;
+    display: flex !important;
+    flex-direction: column;
+    gap: 2rem;
+    column-count: auto !important;
+    max-width: 900px !important;
     margin: 0 auto;
 }
 
 .notes-grid.list-view .note-card {
     display: flex;
-    /* Return to flex for list item if desired, or keep inline-block */
+    flex-direction: row;
     width: 100%;
-    margin-bottom: 1rem;
-    flex-direction: column;
-    /* Stack image on top even in list view, or row if preferred */
-    /* If user wants Google Keep list view, it's usually just a single column of standard cards */
+    min-height: 240px;
+    margin-bottom: 0;
+    align-items: stretch;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
 }
 
-/* Reset image size for list view if it was changed */
+/* Zig-Zag Pattern */
+.notes-grid.list-view .note-card:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
 .notes-grid.list-view .note-image-container {
-    width: 100%;
+    width: 45%;
     height: auto;
-    max-height: 300px;
+    max-height: none;
+    /* Allow full height */
+    position: relative;
+    overflow: hidden;
+}
+
+.notes-grid.list-view .note-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Diagonal Cut Effect */
+.notes-grid.list-view .note-card:nth-child(odd) .note-image-container {
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    margin-right: -20px;
+    /* Pull content closer */
+}
+
+.notes-grid.list-view .note-card:nth-child(even) .note-image-container {
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    margin-left: -20px;
 }
 
 .notes-grid.list-view .note-inner-content {
-    padding: 1.5rem;
+    width: 55%;
+    /* Balance the rest */
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+    /* Above image margin overlap */
 }
 
-.note-card:hover .note-footer {
-    opacity: 1;
+/* Typography for List View */
+.notes-grid.list-view .note-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.notes-grid.list-view .note-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    /* Show more text */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Mobile Fallback for List View */
+@media (max-width: 768px) {
+
+    .notes-grid.list-view .note-card,
+    .notes-grid.list-view .note-card:nth-child(even) {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .notes-grid.list-view .note-image-container,
+    .notes-grid.list-view .note-card:nth-child(odd) .note-image-container,
+    .notes-grid.list-view .note-card:nth-child(even) .note-image-container {
+        width: 100%;
+        height: 180px;
+        clip-path: none;
+        margin: 0;
+    }
+
+    .notes-grid.list-view .note-inner-content {
+        width: 100%;
+        padding: 1.5rem;
+    }
 }
 
 /* --- Note Modal --- */
@@ -1042,14 +1114,22 @@ a:hover {
     border-bottom: none !important;
 }
 
+.editor-toolbar button,
+.editor-toolbar a {
+    color: var(--text-light) !important;
+}
+
 .editor-toolbar i {
     color: var(--text-light) !important;
 }
 
-.editor-toolbar a.active,
-.editor-toolbar a:hover {
+.editor-toolbar button:hover,
+.editor-toolbar a:hover,
+.editor-toolbar button.active,
+.editor-toolbar a.active {
     background: rgba(255, 255, 255, 0.1) !important;
     border-color: transparent !important;
+    color: var(--text-light) !important;
 }
 
 .CodeMirror {

@@ -4,9 +4,16 @@
 <div class="auth-wrapper">
     <div class="glass-card auth-card">
         <div class="auth-header">
-            <h1>{% if mode == 'login' %}Welcome Back{% else %}Join Us{% endif %}</h1>
-            <p>{% if mode == 'login' %}Login to continue managing your tasks.{% else %}Create an account to get
-                started.{% endif %}</p>
+            <h1>
+                {% if mode == 'login' %}Welcome Back
+                {% elif mode == 'register' %}Join Us
+                {% else %}Verify Email{% endif %}
+            </h1>
+            <p>
+                {% if mode == 'login' %}Login to continue managing your tasks.
+                {% elif mode == 'register' %}Create an account to get started.
+                {% else %}Enter the code sent to your email.{% endif %}
+            </p>
         </div>
 
         {% with messages = get_flashed_messages() %}
@@ -20,6 +27,12 @@
         {% endwith %}
 
         <form method="POST" action="{{ url_for('auth.' + mode) }}" class="auth-form">
+            {% if mode == 'verify_otp' %}
+            <div class="input-group">
+                <i class="fas fa-key"></i>
+                <input type="text" name="otp" placeholder="Enter 6-digit Code" required maxlength="6" pattern="\d{6}">
+            </div>
+            {% else %}
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
                 <input type="email" name="email" placeholder="Email Address" required>
@@ -28,17 +41,22 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" name="password" placeholder="Password" required>
             </div>
+            {% endif %}
 
             <button type="submit" class="btn-primary">
-                {% if mode == 'login' %}Login{% else %}Sign Up{% endif %}
+                {% if mode == 'login' %}Login
+                {% elif mode == 'register' %}Sign Up
+                {% else %}Verify{% endif %}
             </button>
         </form>
 
         <div class="auth-footer">
             {% if mode == 'login' %}
             <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Sign Up</a></p>
-            {% else %}
+            {% elif mode == 'register' %}
             <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+            {% else %}
+            <p>Didn't receive code? <a href="{{ url_for('auth.login') }}">Try Again</a></p>
             {% endif %}
         </div>
     </div>
