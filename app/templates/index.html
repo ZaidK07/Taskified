@@ -2,24 +2,20 @@
 
 {% block content %}
 <div class="dashboard-wrapper">
-    <header class="dashboard-header glass-card">
-        <div class="user-info">
-            <h2>Hello, {{ user.email.split('@')[0] }}!</h2>
-            <p class="date-display" id="dateDisplay"></p>
-        </div>
-        <a href="{{ url_for('auth.logout') }}" class="btn-icon" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </a>
-    </header>
 
-    <main class="todo-container">
+    <main class="todo-container" style="margin-top: 2rem;">
         <div class="add-todo-section glass-card">
             <form action="{{ url_for('main.add_todo') }}" method="POST" class="add-todo-form glass-card">
-                <input type="text" name="title" placeholder="Add a new task..." required>
-                <input type="date" name="due_date" class="date-input" style="width: auto; margin-right: 0.5rem;"
-                    title="Due Date">
-                <input type="text" name="tags" placeholder="Tags" style="width: 100px; margin-right: 0.5rem;"
-                    title="Comma separated tags">
+                <input type="text" name="title" placeholder="Add a new task..." required class="todo-input-title">
+
+                <div class="meta-inputs">
+                    <div class="date-input-wrapper">
+                        <input type="text" name="due_date" class="date-input" placeholder="Due Date">
+                        <i class="far fa-calendar-alt date-icon"></i>
+                    </div>
+                    <input type="text" name="tags" placeholder="Tags" class="tags-input" title="Comma separated tags">
+                </div>
+
                 <button type="submit" class="btn-add"><i class="fas fa-plus"></i></button>
             </form>
         </div>

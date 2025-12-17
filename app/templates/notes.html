@@ -2,26 +2,30 @@
 
 {% block content %}
 <div class="dashboard-wrapper">
-    <header class="dashboard-header glass-card">
-        <div class="user-info">
-            <h2>Notes</h2>
+    <header class="dashboard-header glass-card" style="justify-content: flex-start; position: relative; height: 70px;">
+        <div class="note-controls"
+            style="display: flex; align-items: center; gap: 1rem; margin-left: 1rem; z-index: 10;">
+            <span style="font-size: 1.1rem; color: var(--text-light); font-weight: 600;">Add Note:</span>
+            <button id="toggleNoteFormBtn" class="btn-icon"
+                style="background: var(--primary-color); color: white; width: 40px; height: 40px;" title="New Note">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
-        <div class="view-switcher" id="viewSwitcher">
+
+        <div class="view-switcher" id="viewSwitcher"
+            style="position: absolute; left: 50%; transform: translateX(-50%); z-index: 10;">
             <button class="view-btn active" data-view="grid" title="Grid View">
                 <i class="fas fa-th-large"></i>
             </button>
-            <button class="view-btn" data-view="list" title="List View">
-                <i class="fas fa-list"></i>
+            <button class="view-btn" data-view="gallery" title="Gallery View">
+                <i class="fas fa-columns"></i>
             </button>
         </div>
-        <a href="{{ url_for('auth.logout') }}" class="btn-icon" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </a>
     </header>
 
     <main class="notes-container">
         <!-- New Note Form -->
-        <div class="add-note-section glass-card">
+        <div class="add-note-section glass-card" id="addNoteSection" style="display: none; transition: all 0.3s ease;">
             <form action="{{ url_for('main.add_note') }}" method="POST" enctype="multipart/form-data"
                 class="add-note-form" id="addNoteForm">
                 <input type="text" name="title" placeholder="Title" class="note-title-input">
@@ -128,4 +132,24 @@
         </div>
     </div>
 </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('toggleNoteFormBtn');
+        const noteSection = document.getElementById('addNoteSection');
+
+        if (toggleBtn && noteSection) {
+            toggleBtn.addEventListener('click', () => {
+                if (noteSection.style.display === 'none') {
+                    noteSection.style.display = 'block';
+                    toggleBtn.style.transform = 'rotate(45deg)';
+                } else {
+                    noteSection.style.display = 'none';
+                    toggleBtn.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

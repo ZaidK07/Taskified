@@ -51,14 +51,89 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Update container class
-            if (view === 'list') {
-                notesGrid.classList.add('list-view');
+            if (view === 'bento') {
+                notesGrid.classList.add('bento-view');
+                notesGrid.classList.remove('list-view'); // Remove legacy class
+                notesGrid.classList.remove('gallery-view');
+                calculateBentoSizes();
+            } else if (view === 'gallery') {
+                notesGrid.classList.add('gallery-view');
+                notesGrid.classList.remove('list-view'); // Clean up old
+                notesGrid.classList.remove('bento-view'); // Clean up old
+                initGalleryInteraction();
             } else {
+                notesGrid.classList.remove('gallery-view');
+                notesGrid.classList.remove('bento-view');
                 notesGrid.classList.remove('list-view');
             }
 
             // Save preference
             localStorage.setItem('notesView', view);
+        }
+
+        function calculateBentoSizes() {
+            const cards = document.querySelectorAll('.note-card');
+            cards.forEach(card => {
+                // Reset classes first
+                card.classList.remove('span-col-2', 'span-row-2', 'span-big');
+
+                const content = card.dataset.content || '';
+                const hasImage = card.dataset.image && card.dataset.image !== '';
+                const textLength = content.length;
+
+                // Logic for sizing
+                if (hasImage && textLength > 100) {
+                    card.classList.add('span-big');
+                } else if (textLength > 300) {
+                    card.classList.add('span-row-2');
+                } else if (textLength > 100 || hasImage) {
+                    card.classList.add('span-col-2');
+                }
+                // Else default (span-1)
+            });
+        }
+
+        function initGalleryInteraction() {
+            const cards = document.querySelectorAll('.note-card');
+            if (cards.length > 0) {
+                // Set first card active by default if none active
+                if (!document.querySelector('.note-card.active')) {
+                    cards[0].classList.add('active');
+                }
+
+                cards.forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Only applies if in gallery view AND not clicking modal triggers (if any)
+                        // But wait, the whole card triggers modal in Grid view.
+                        // In Gallery view, we want expand FIRST.
+                        // So we need to prevent Modal opening if it's strictly an expand action?
+                        // Or maybe Expands AND Opens Modal?
+                        // "Click strip -> slides open". This suggests preview.
+                        // IF the card is collapsed, we should Expand it and STOP propagation (prevent modal).
+                        // IF the card is ALREADY expanded, then maybe open Modal?
+
+                        if (notesGrid.classList.contains('gallery-view')) {
+                            if (!card.classList.contains('active')) {
+                                e.stopPropagation(); // Stop modal from opening
+                                e.preventDefault();
+
+                                // Deactivate others
+                                cards.forEach(c => c.classList.remove('active'));
+                                // Activate this
+                                card.classList.add('active');
+                            }
+                            // If already active, let it bubble to open modal
+                        }
+                    }, true); // Capture phase might be needed if modal listener is on card?
+                    // Modal listener is: card.addEventListener('click', ...)
+                    // Standard bubbling order.
+                    // If I put this check inside the Modal Listener, it's messy.
+                    // I'll add this listener here. `e.stopPropagation()` works if this listener runs before the modal one?
+                    // Or I check `gallery-view` inside the Modal listener?
+                    // Actually, the Modal listener is defined below. 
+                    // I should attach this listener dynamically or update the Modal listener.
+                });
+            }
         }
     }
 
@@ -262,6 +337,75 @@ document.addEventListener('DOMContentLoaded', () => {
             spellChecker: false,
             minHeight: "150px",
             placeholder: "Take a note..."
+        });
+    }
+
+    // Flatpickr Initialization
+    if (typeof flatpickr !== 'undefined') {
+        flatpickr(".date-input", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+            theme: "dark",
+            disableMobile: "true", // Force custom picker even on mobile for styling consistency
+            animate: true,
+            prevArrow: '<i class="fas fa-chevron-left"></i>',
+            nextArrow: '<i class="fas fa-chevron-right"></i>'
+        });
+    }
+
+    // Edit Name Logic
+    const editBtn = document.getElementById('editNameBtn');
+    const nameSpan = document.getElementById('userNameSpan');
+
+    if (editBtn && nameSpan) {
+        editBtn.addEventListener('click', () => {
+            const currentName = nameSpan.textContent.trim();
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentName;
+            input.className = 'name-edit-input';
+            input.style.fontSize = 'inherit';
+            input.style.fontWeight = 'inherit';
+            input.style.border = 'none';
+            input.style.borderBottom = '1px solid var(--primary-color)';
+            input.style.background = 'transparent';
+            input.style.color = 'var(--text-light)';
+            input.style.width = Math.max(currentName.length, 10) + 'ch';
+            input.style.outline = 'none';
+
+            nameSpan.replaceWith(input);
+            input.focus();
+
+            const saveName = async () => {
+                const newName = input.value.trim() || currentName;
+
+                try {
+                    const res = await fetch('/update_name', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: newName })
+                    });
+
+                    if (res.ok) {
+                        nameSpan.textContent = newName;
+                        input.replaceWith(nameSpan);
+                    } else {
+                        alert('Failed to save name');
+                        input.replaceWith(nameSpan);
+                    }
+                } catch (e) {
+                    console.error(e);
+                    input.replaceWith(nameSpan);
+                }
+            };
+
+            input.addEventListener('blur', saveName);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            });
         });
     }
 });

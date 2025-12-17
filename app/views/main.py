@@ -227,3 +227,13 @@ def share_note_toggle(note_id):
         })
         
     return redirect(url_for('main.notes'))
+@main_bp.route('/update_name', methods=['POST'])
+@login_required
+def update_name():
+    data = request.get_json()
+    new_name = data.get('name')
+    if new_name is not None:
+        g.user.name = new_name.strip()
+        db.session.commit()
+        return jsonify({'success': True})
+    return jsonify({'success': False}), 400

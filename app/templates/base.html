@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -38,22 +39,41 @@
     {% endif %}
 
     {% if user %}
-    <header class="glass-header">
-        <div class="brand">Taskified</div>
-        <form action="{{ url_for('main.search') }}" method="get" class="search-form">
-            <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
-            <input type="text" name="q" placeholder="Search..." value="{{ query|default('') }}">
-        </form>
-        <a href="{{ url_for('auth.profile') }}" class="profile-link">
-            <div class="avatar-small">
-                <img src="{{ url_for('static', filename='avatars/user_' ~ user.id ~ '.jpg') }}"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                    class="avatar-img">
-                <div class="avatar-fallback" style="display:none;">
-                    <i class="fas fa-user"></i>
+    <header class="glass-header global-grid-header">
+        <!-- LEFT: Avatar + Greeting -->
+        <div class="header-left">
+            <a href="{{ url_for('auth.profile') }}" class="profile-link">
+                <div class="avatar-small">
+                    <img src="{{ url_for('static', filename='avatars/user_' ~ user.id ~ '.jpg') }}"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        class="avatar-img">
+                    <div class="avatar-fallback" style="display:none;">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+            <h2 id="greetingHeader" class="editable-greeting global-greeting">
+                Hello, <span id="userNameSpan">{{ user.name or user.email.split('@')[0] }}</span>
+                <i class="fas fa-pencil-alt edit-icon" id="editNameBtn" title="Edit Name"></i>
+            </h2>
+        </div>
+
+        <!-- CENTER: Brand + Date -->
+        <div class="header-center">
+            <div class="brand">Taskified</div>
+            <span id="dateDisplay" class="global-date"></span>
+        </div>
+
+        <!-- RIGHT: Search + Logout -->
+        <div class="header-right">
+            <form action="{{ url_for('main.search') }}" method="get" class="search-form">
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                <input type="text" name="q" placeholder="Search..." value="{{ query|default('') }}">
+            </form>
+            <a href="{{ url_for('auth.logout') }}" class="btn-icon-small" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
     </header>
     {% endif %}
 
@@ -63,6 +83,7 @@
 
     <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 

@@ -245,6 +245,8 @@ a:hover {
     align-items: center;
     padding: 1.5rem;
     margin-bottom: 1rem;
+    position: relative;
+    /* For absolute centering of children */
 }
 
 .user-info h2 {
@@ -1212,4 +1214,452 @@ a:hover {
 
 .profile-info p {
     color: var(--text-muted);
+}
+
+/* --- Date Picker & Todo Layout Fixes --- */
+
+/* Todo Input Layout */
+.add-todo-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.todo-input-title {
+    flex: 1;
+    /* Takes remaining space */
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    min-width: 0;
+}
+
+.todo-input-title:focus {
+    box-shadow: none;
+    background: transparent;
+}
+
+.meta-inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-input-wrapper {
+    position: relative;
+    width: 200px;
+    /* Increased to 200px for safety */
+}
+
+.date-input,
+.flatpickr-input {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+    /* Changed to Left to avoid overlap with right-icon */
+    padding-right: 40px;
+    /* Space for icon */
+}
+
+.date-input:focus {
+    box-shadow: none;
+    color: var(--text-light);
+}
+
+.date-icon {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 0.9rem;
+}
+
+.tags-input {
+    width: 80px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.tags-input:focus {
+    box-shadow: none;
+    border-bottom-color: var(--primary-color);
+    width: 120px;
+    /* Expand on focus */
+}
+
+/* Flatpickr Customization (Glass Theme) */
+.flatpickr-calendar {
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+    font-family: var(--font-main) !important;
+}
+
+.flatpickr-calendar.arrowTop:before,
+.flatpickr-calendar.arrowTop:after,
+.flatpickr-calendar.arrowBottom:before,
+.flatpickr-calendar.arrowBottom:after {
+    display: none !important;
+}
+
+.flatpickr-months {
+    background: transparent !important;
+    padding: 10px !important;
+}
+
+.flatpickr-month {
+    color: var(--text-light) !important;
+    fill: var(--text-light) !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+    color: var(--text-light) !important;
+    font-weight: 600 !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.flatpickr-weekdays {
+    background: transparent !important;
+}
+
+.flatpickr-weekday {
+    color: var(--text-muted) !important;
+    font-weight: 500 !important;
+}
+
+.flatpickr-day {
+    color: var(--text-light) !important;
+    border-radius: 8px !important;
+    border: 1px solid transparent !important;
+}
+
+.flatpickr-day:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: transparent !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day:focus,
+.flatpickr-day.prevMonthDay.inRange,
+.flatpickr-day.nextMonthDay.inRange,
+.flatpickr-day.today.inRange,
+.flatpickr-day.prevMonthDay:focus,
+.flatpickr-day.nextMonthDay:focus,
+.flatpickr-day.today:focus,
+.flatpickr-day:hover,
+.flatpickr-day.prevMonthDay:hover,
+.flatpickr-day.nextMonthDay:hover,
+.flatpickr-day.today:hover {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: bold;
+    box-shadow: 0 0 10px var(--primary-color) !important;
+}
+
+/* --- Editable Greeting --- */
+.editable-greeting {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-icon {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.editable-greeting:hover .edit-icon {
+    opacity: 1;
+}
+
+.edit-icon:hover {
+    color: var(--primary-color);
+}
+
+.name-edit-input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.flatpickr-day.today {
+    border-color: var(--text-muted) !important;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    color: rgba(255, 255, 255, 0.1) !important;
+}
+
+span.flatpickr-weekday {
+    background: transparent !important;
+}
+
+/* Mobile Responsive adjustment for form */
+@media (max-width: 600px) {
+    .add-todo-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .meta-inputs {
+        justify-content: space-between;
+    }
+
+    .tags-input:focus {
+        width: 100px;
+    }
+}
+
+/* --- Global Grid Header --- */
+.global-grid-header {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 1rem 2rem !important;
+    /* Proper spacing */
+    height: 80px;
+    gap: 1rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.global-greeting {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.global-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.btn-icon-small {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    border: 1px solid var(--glass-border);
+    transition: all 0.2s;
+}
+
+.btn-icon-small:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--danger-color);
+    /* Sign out red */
+    transform: translateY(-2px);
+}
+
+/* Adjust default brand in this context */
+.header-center .brand {
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #a78bfa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+/* Hide Search Bar on very small screens or make it icon only? */
+@media (max-width: 900px) {
+    .global-grid-header {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        height: auto;
+    }
+
+    .header-center {
+        grid-column: 1 / -1;
+        order: -1;
+        margin-bottom: 1rem;
+    }
+
+    .header-right {
+        justify-content: flex-end;
+    }
+}
+
+/* --- Accordion Gallery View --- */
+/* --- Accordion Gallery View (Restored Vertical Strips) --- */
+.notes-grid.gallery-view {
+    display: flex;
+    flex-direction: row;
+    height: 600px;
+    /* Fixed height gallery */
+    gap: 10px;
+    padding: 10px 0;
+    overflow-x: auto;
+    /* Horizontal Scroll */
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    align-items: stretch;
+    /* Stretch to height */
+}
+
+.notes-grid.gallery-view .note-card {
+    min-width: 80px;
+    width: 80px;
+    height: 100%;
+    margin: 0;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Text at bottom */
+    align-items: center;
+    border-radius: 40px;
+    /* Soft pill shape */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0;
+}
+
+/* Expanded State */
+.notes-grid.gallery-view .note-card.active {
+    min-width: 450px;
+    width: 450px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border-color: var(--primary-color);
+    align-items: flex-start;
+    z-index: 5;
+    order: unset;
+}
+
+/* Collapsed Content Styling */
+.notes-grid.gallery-view .note-card h3 {
+    margin: 0;
+    width: auto;
+    font-size: 1.2rem;
+    font-weight: 600;
+    z-index: 2;
+    padding: 0;
+    background: none;
+    /* Vertical Text Magic */
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform-origin: center;
+    translate: -50% 0;
+    letter-spacing: 2px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Hide other content in collapsed state */
+.notes-grid.gallery-view .note-card:not(.active) .note-inner-content p,
+.notes-grid.gallery-view .note-card:not(.active) .tag-chip,
+.notes-grid.gallery-view .note-card:not(.active) .note-image-container {
+    display: none;
+}
+
+.notes-grid.gallery-view .note-card:not(.active) .note-inner-content {
+    /* Pure wrapper */
+    position: static;
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+}
+
+/* Expanded Content Styling */
+.notes-grid.gallery-view .note-card.active .note-image-container {
+    height: 300px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    display: block !important;
+}
+
+.notes-grid.gallery-view .note-card.active .note-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.notes-grid.gallery-view .note-card.active .note-inner-content {
+    margin-top: auto;
+    padding: 2rem;
+    width: 100%;
+    background: linear-gradient(to top, rgba(15, 23, 42, 1) 20%, rgba(15, 23, 42, 0.8) 80%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 50%;
+}
+
+.notes-grid.gallery-view .note-card.active .note-content h3 {
+    writing-mode: horizontal-tb;
+    transform: none;
+    position: static;
+    translate: none;
+    font-size: 1.5rem;
+    white-space: normal;
+    text-align: left;
+    margin-bottom: 0.5rem;
 }
